@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1572023403 source:/home/pi/Flipp/src/sensor.cpp
+	"sensor.h"
+	<wiringPi.h>
+	<mcp3004.h>
+	<stdio.h>
+	<stdlib.h>
+	<iostream>
+
+1572023069 /home/pi/Flipp/include/sensor.h
+	<string>
+
+1572020625 source:/home/pi/Flipp/main.cpp
+	<iostream>
+	<Game.h>
+
+1572021627 source:/home/pi/Flipp/src/Actuator.cpp
+	"Actuator.h"
+	<iostream>
+	<wiringPi.h>
+
+1572020783 /home/pi/Flipp/include/Actuator.h
+
+1572026511 /home/pi/Flipp/include/Game.h
+	"sensor.h"
+	"Player.h"
+	<iostream>
+	<wiringPi.h>
+
+1572086936 source:/home/pi/Flipp/src/Game.cpp
+	"Game.h"
+	"Player.h"
+	"sensor.h"
+	<iostream>
+	<wiringPi.h>
+
+1572026318 source:/home/pi/Flipp/src/Player.cpp
+	"Player.h"
+
+1572026306 /home/pi/Flipp/include/Player.h
+
