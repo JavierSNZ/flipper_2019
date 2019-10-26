@@ -16,18 +16,25 @@ Game::Game()
     Sensor sensor;
     sensor.irSensorInit();
     Player player;   //Set player's ball number
-    launchBall();       //LaunchBall
     ballLossMonitoring();
 }
 
 int Game::launchBall()
 {
-	pinMode(BallLauncher, OUTPUT);
-	digitalWrite(BallLauncher, HIGH);
-	delay(1000);
-	digitalWrite(BallLauncher, LOW);
-	cout<<"Ball launched"<<endl;
-	return 0;
+    if(player.getBallNumber() == 0) //Stop if no balls is left
+    {
+        return 1;
+    }
+    else
+    {
+        delay(1000);
+        digitalWrite(BallLauncher, HIGH);
+        delay(50);
+        digitalWrite(BallLauncher, LOW);
+        cout<<"Ball launched"<<endl;
+        player.setBallNumber(player.getBallNumber() -1);
+        return 0;
+    }
 }
 int Game::gpioInit()
 {
@@ -35,25 +42,20 @@ int Game::gpioInit()
         cout<<"Setup wiringPi failed"<<endl;
         return 1;
     }
+    pinMode(BallLauncher, OUTPUT);
+	digitalWrite(BallLauncher, LOW);
 }
 void Game::ballLossMonitoring()
 {
-    int i = 1;
-    while(i == 1){
-        cout<<sensor.getValueIrSensor()<<endl;
+    int j =0;
+    while(1){
+       // cout<<sensor.getValueIrSensor()<<endl;
         cout<<player.getBallNumber()<<endl;
-        if(sensor.getValueIrSensor() > 690)
+        if(sensor.getValueIrSensor() < 830)
         {
-            player.setBallNumber(player.getBallNumber() -1);
-            if(player.getBallNumber() == 0) //Stop if no balls is left
-            {
-                i = 0;
-            }
-            else
-            {
-                launchBall();
-                delay(1000);    //1 second pause
-            }
+            j = launchBall();//1 second pause
+            if(j == 1)
+                break;
         }
     }
 }
