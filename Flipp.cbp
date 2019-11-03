@@ -36,11 +36,13 @@
 		<Unit filename="include/Actuator.h" />
 		<Unit filename="include/Game.h" />
 		<Unit filename="include/Player.h" />
+		<Unit filename="include/Sound.h" />
 		<Unit filename="include/sensor.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Actuator.cpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Player.cpp" />
+		<Unit filename="src/Sound.cpp" />
 		<Unit filename="src/sensor.cpp" />
 		<Extensions>
 			<code_completion />

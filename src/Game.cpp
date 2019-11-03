@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "Player.h"
 #include "sensor.h"
+#include "Sound.h"
+
 
 #include <iostream>
 #include <wiringPi.h>
@@ -16,7 +18,30 @@ Game::Game()
     Sensor sensor;
     sensor.irSensorInit();
     Player player;   //Set player's ball number
-    ballLossMonitoring();
+    Sound sound;
+    cout<<"Sound init done"<<endl;
+    while(true){
+        if(digitalRead(StartGameBtn) == false)
+        {
+            cout<<"Set player ball number to 3"<<endl;
+            player.setBallNumber(3);
+            cout<<player.getBallNumber()<<endl;
+            sound.play_begin();
+            ballLossMonitoring();
+        }
+    }
+}
+
+int Game::gpioInit()
+{
+    if(wiringPiSetupPhys()<0){              //Set Gpio numbering
+        cout<<"Setup wiringPi failed"<<endl;
+        return 1;
+    }
+    pinMode(BallLauncher, OUTPUT);
+	digitalWrite(BallLauncher, LOW);
+    pinMode(StartGameBtn, INPUT);
+	pullUpDnControl(StartGameBtn, PUD_DOWN);   //Set PullDown internal resitor 50kohm
 }
 
 int Game::launchBall()
@@ -27,29 +52,23 @@ int Game::launchBall()
     }
     else
     {
+        sound.play_newBall();
         delay(1000);
         digitalWrite(BallLauncher, HIGH);
         delay(50);
         digitalWrite(BallLauncher, LOW);
         cout<<"Ball launched"<<endl;
         player.setBallNumber(player.getBallNumber() -1);
+        delay(200);
         return 0;
     }
 }
-int Game::gpioInit()
-{
-    if(wiringPiSetupPhys()<0){              //Set Gpio numbering
-        cout<<"Setup wiringPi failed"<<endl;
-        return 1;
-    }
-    pinMode(BallLauncher, OUTPUT);
-	digitalWrite(BallLauncher, LOW);
-}
 void Game::ballLossMonitoring()
 {
-    int j =0;
+    int j = 0;
+    sound.play_fond();
     while(1){
-       // cout<<sensor.getValueIrSensor()<<endl;
+       cout<<sensor.getValueIrSensor()<<endl;
         cout<<player.getBallNumber()<<endl;
         if(sensor.getValueIrSensor() < 830)
         {

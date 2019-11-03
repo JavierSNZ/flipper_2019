@@ -2,7 +2,7 @@
 
 Player::Player()
 {
-    ball = 3;
+    ball = 0;
 }
 
 void Player::addBall()
